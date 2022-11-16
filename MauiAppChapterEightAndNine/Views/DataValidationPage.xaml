@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:MauiAppChapterEightAndNine.ViewModels"
+             xmlns:behaviors="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:renderers="clr-namespace:MauiAppChapterEightAndNine.Renderers"
+             x:Class="MauiAppChapterEightAndNine.Views.DataValidationPage"
+             x:DataType="viewModels:DataValidationViewModel"
+             Title="DataValidationPage">
+    <VerticalStackLayout Margin="20">
+        <Label 
+            Text="Email"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <Entry Text="{Binding Email}">
+            <Entry.Behaviors>
+                <behaviors:EmailValidationBehavior 
+                    Flags="ValidateOnValueChanged" 
+                    x:Name="emailValidator"/>
+            </Entry.Behaviors>
+        </Entry>
+        <Label IsVisible="{Binding Source={x:Reference emailValidator},
+                               Path=IsNotValid}" Text="Invalid Email" TextColor="Red"></Label>
+
+        <Label 
+            Text="Password"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <renderers:CustomEntry IsPassword="True" 
+               Text="{Binding Password}"
+               >
+            <Entry.Behaviors>
+                <behaviors:CharactersValidationBehavior 
+                    Flags="ValidateOnValueChanged"
+                    MinimumLength="6"
+                    x:Name="passwordValidator"/>
+            </Entry.Behaviors>
+        </renderers:CustomEntry>
+        <Label IsVisible="{Binding Source={x:Reference passwordValidator},
+                               Path=IsNotValid}" Text="Password length must greater than 6" TextColor="Red"></Label>
+
+        <Button Text="Log In" Command="{Binding LogInCommand}">
+
+        </Button>
+    </VerticalStackLayout>
+</ContentPage>
